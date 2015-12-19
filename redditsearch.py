@@ -5,6 +5,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 import praw
+import time
 from PyQt4 import QtGui, QtCore
 
 subList = []
@@ -76,6 +77,9 @@ class Window(QtGui.QMainWindow):
 
 	# checks the new tab in the given subreddit for first 50 titles matching the given keyword
 	def search_subreddit(self, prawObj, subreddit, text):
+		if not subreddit.isalnum():
+			self.display.append("<b>" + subreddit + " does not exist.")
+			return
 		try:
 			submissions = prawObj.get_subreddit(subreddit).get_new(limit=50)
 			submissionList = []
@@ -94,10 +98,6 @@ class Window(QtGui.QMainWindow):
 		except praw.errors.InvalidSubreddit:
 			self.display.append("<b>" + subreddit + " does not exist.")
 			self.display.append("")
-		except praw.errors.NotFound:
-			self.display.setText("<b>Too many requests now. Closing...</b>")
-			time.sleep(3)
-			exit()
 
 	# function called to search, takes text in searchbar and uses it as keyword
 	def search(self):
