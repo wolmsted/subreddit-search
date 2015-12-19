@@ -79,6 +79,7 @@ class Window(QtGui.QMainWindow):
 	def search_subreddit(self, prawObj, subreddit, text):
 		if not subreddit.isalnum():
 			self.display.append("<b>" + subreddit + " does not exist.")
+			self.display.append("")
 			return
 		try:
 			submissions = prawObj.get_subreddit(subreddit).get_new(limit=50)
